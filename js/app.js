@@ -125,8 +125,8 @@ function closeModal() {
 }
 
 document.querySelectorAll('.exp-row[data-modal]').forEach(row => {
-  row.style.cursor = 'pointer';
-  row.addEventListener('click', () => openModal(row.dataset.modal));
+  // row.style.cursor = 'pointer';
+  // row.addEventListener('click', () => openModal(row.dataset.modal));
 });
 
 document.getElementById('modalClose')?.addEventListener('click', closeModal);
