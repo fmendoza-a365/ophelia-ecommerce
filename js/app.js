@@ -58,9 +58,15 @@ updateNav();
 /* ── 3. Hamburger ── */
 const hamburger = document.getElementById('hamburger');
 const navLinks  = document.getElementById('navLinks');
-hamburger?.addEventListener('click', () => navLinks.classList.toggle('open'));
+hamburger?.addEventListener('click', () => {
+  navLinks.classList.toggle('open');
+  nav.classList.toggle('menu-open');
+});
 navLinks?.querySelectorAll('a').forEach(a =>
-  a.addEventListener('click', () => navLinks.classList.remove('open'))
+  a.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    nav.classList.remove('menu-open');
+  })
 );
 
 /* ── 4. Modal ── */
