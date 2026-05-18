@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ophelia — Experiencia Floral</title>
+  <meta name="description" content="Detalle de experiencia floral Ophelia. Lima, Perú." />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ── Experience Detail Page ── */
+    .exp-hero {
+      position: relative; height: 80vh; overflow: hidden;
+      display: flex; align-items: flex-end; justify-content: flex-start;
+    }
+    .exp-hero img {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    }
+    .exp-hero::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(20,22,18,.9) 0%, rgba(20,22,18,.4) 50%, rgba(20,22,18,.15) 100%);
+    }
+    .exp-hero-content {
+      position: relative; z-index: 1;
+      padding: 4rem 5vw; max-width: 900px;
+    }
+    .exp-hero-content .label { 
+      color: rgba(245,242,236,.85); margin-bottom: 1rem; 
+      font-size: 1rem; letter-spacing: .25em; 
+    }
+    .exp-hero-content h1 {
+      font-family: var(--f-display); font-size: clamp(3rem, 7vw, 5.5rem);
+      color: var(--cream); font-weight: 300; margin-bottom: 1rem;
+      text-shadow: 0 2px 15px rgba(0,0,0,.4); line-height: 1.1;
+    }
+    .exp-hero-content p { 
+      color: rgba(245,242,236,.95); font-size: clamp(1.2rem, 2vw, 1.5rem); 
+      max-width: 55ch; text-shadow: 0 1px 8px rgba(0,0,0,.4); 
+    }
+
+    .exp-detail { padding: 6rem 5vw; }
+    .exp-detail-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 400px; gap: 6rem; align-items: start;
+    }
+    
+    .exp-description {
+      opacity: 0; transform: translateY(30px); animation: fadeInUp 1s ease forwards 0.2s;
+    }
+    @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+    .exp-description h2 {
+      font-family: var(--f-display); font-size: clamp(2.2rem, 4vw, 3rem);
+      color: var(--green); font-style: italic; margin-bottom: 2rem; font-weight: 300;
+    }
+    .exp-description p {
+      font-size: 1.25rem; color: var(--text-m); margin-bottom: 1.5rem; line-height: 1.8;
+    }
+
+    .exp-includes { margin-top: 4rem; }
+    .exp-includes h3 {
+      font-family: var(--f-sans); font-size: 0.95rem;
+      letter-spacing: .15em; text-transform: uppercase;
+      color: var(--green); margin-bottom: 1.5rem;
+    }
+    .include-item {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1rem .5rem; border-bottom: 1px solid rgba(95,102,91,.15);
+      font-size: 1.15rem; color: var(--text);
+      transition: background .3s, transform .3s, padding-left .3s;
+      border-radius: 4px;
+    }
+    .include-item:hover {
+      background: rgba(95,102,91,.04);
+      transform: translateX(5px);
+      padding-left: 1rem;
+    }
+    .include-item svg {
+      width: 18px; height: 18px; fill: var(--green); flex-shrink: 0;
+      transition: transform .3s;
+    }
+    .include-item:hover svg { transform: scale(1.2); }
+
+    .exp-sidebar {
+      position: sticky; top: 120px;
+      opacity: 0; transform: translateY(30px); animation: fadeInUp 1s ease forwards 0.4s;
+    }
+    .exp-pricing { 
+      background: var(--cream-d); padding: 3rem 2.5rem; 
+      border: 1px solid rgba(95,102,91,.08);
+    }
+    .exp-pricing h3 {
+      font-family: var(--f-sans); font-size: 0.9rem;
+      letter-spacing: .15em; text-transform: uppercase;
+      color: var(--green); margin-bottom: 2rem; text-align: center;
+    }
+    .pricing-tier {
+      margin-bottom: 2rem; padding: 2rem;
+      border: 1px solid rgba(95,102,91,.15);
+      background: var(--cream);
+      border-radius: 6px;
+      transition: transform .3s, box-shadow .3s;
+      cursor: default;
+    }
+    .pricing-tier:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,.08);
+      border-color: rgba(95,102,91,.3);
+    }
+    .pricing-tier:last-of-type { margin-bottom: 1.5rem; }
+    .pricing-tier h4 {
+      font-family: var(--f-sans); font-size: 0.85rem;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--green-l); margin-bottom: .5rem;
+    }
+    .pricing-tier .price {
+      font-family: var(--f-display); font-size: 2.8rem;
+      color: var(--green); margin-bottom: .5rem; line-height: 1;
+    }
+    .pricing-tier p { font-size: 1.05rem; color: var(--text-m); margin-bottom: 1rem; }
+    .pricing-tier ul { list-style: none; }
+    .pricing-tier ul li {
+      font-size: 0.95rem; color: var(--text-m);
+      padding: .3rem 0 .3rem 1.2rem;
+      position: relative;
+    }
+    .pricing-tier ul li::before {
+      content: '—'; position: absolute; left: 0; color: var(--green-l);
+    }
+
+    .exp-cta-box {
+      margin-top: 1rem;
+    }
+    .exp-wa {
+      display: flex; align-items: center; justify-content: center; gap: .8rem;
+      width: 100%; background: var(--green); color: var(--cream);
+      font-family: var(--f-sans); font-size: 0.95rem;
+      letter-spacing: .12em; text-transform: uppercase;
+      padding: 1.4rem; transition: background .3s;
+    }
+    .exp-wa:hover { background: var(--green-d); }
+    .exp-wa svg { width: 18px; height: 18px; fill: var(--cream); }
+
+    .exp-gallery { padding: 0 5vw 6rem; }
+    .exp-gallery-inner {
+      max-width: 1200px; margin: 0 auto;
+    }
+    .exp-gallery-inner h3 {
+      font-family: var(--f-sans); font-size: 0.95rem;
+      letter-spacing: .15em; text-transform: uppercase;
+      color: var(--green); margin-bottom: 2rem;
+    }
+    .exp-gallery-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    .exp-gallery-grid img {
+      width: 100%; aspect-ratio: 4/3; object-fit: cover;
+      transition: transform .8s ease, filter .5s ease;
+      cursor: pointer;
+    }
+    .exp-gallery-grid img:hover { transform: scale(1.04); filter: brightness(1.1); }
+
+    .exp-nav {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 3rem 5vw 6rem;
+      border-top: 1px solid rgba(95,102,91,.15);
+    }
+    .exp-nav a {
+      font-family: var(--f-sans); font-size: 0.95rem;
+      letter-spacing: .15em; text-transform: uppercase;
+      color: var(--green); display: flex; align-items: center; gap: .6rem;
+      transition: gap .3s, opacity .3s;
+    }
+    .exp-nav a:hover { gap: 1rem; opacity: .7; }
+    .exp-nav svg { width: 16px; height: 16px; fill: none; stroke: var(--green); stroke-width: 2; }
+
+    @media (max-width: 1000px) {
+      .exp-hero { height: 65vh; }
+      .exp-detail-inner { grid-template-columns: 1fr; gap: 4rem; }
+      .exp-sidebar { position: static; }
+      .exp-gallery-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav" class="nav--light">
+  <a href="index.html" class="nav-logo">
+    <img src="img/logo.svg" alt="Ophelia" />
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html#experiences">Experiencias</a></li>
+    <li><a href="index.html#about">Nosotros</a></li>
+    <li><a href="index.html#process">Proceso</a></li>
+    <li><a href="index.html#contact">Contacto</a></li>
+  </ul>
+  <a href="index.html#contact" class="nav-cta">Cotizar</a>
+  <button class="hamburger" id="hamburger" aria-label="Menú"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- Hero (filled by JS) -->
+<section class="exp-hero">
+  <img id="expHeroImg" src="" alt="" />
+  <div class="exp-hero-content">
+    <p class="label" id="expLabel"></p>
+    <h1 id="expTitle"></h1>
+    <p id="expTagline"></p>
+  </div>
+</section>
+
+<!-- Detail -->
+<section class="exp-detail reveal">
+  <div class="exp-detail-inner">
+    <div class="exp-description">
+      <h2>Sobre esta experiencia</h2>
+      <p id="expDesc1"></p>
+      <p id="expDesc2"></p>
+      <div class="exp-includes">
+        <h3>Qué incluye</h3>
+        <div id="expIncludes"></div>
+      </div>
+    </div>
+    <div class="exp-sidebar">
+      <div class="exp-pricing">
+        <h3>Precios</h3>
+        <div class="pricing-tier">
+          <h4>Standard</h4>
+          <div class="price" id="expStdPrice"></div>
+          <p id="expStdDesc"></p>
+          <ul id="expStdList"></ul>
+        </div>
+        <div class="pricing-tier">
+          <h4>Premium</h4>
+          <div class="price" id="expPrmPrice"></div>
+          <p id="expPrmDesc"></p>
+          <ul id="expPrmList"></ul>
+        </div>
+      </div>
+      <div class="exp-cta-box">
+        <a id="expWa" href="#" target="_blank" class="exp-wa">
+          <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24z"/></svg>
+          Cotizar por WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Gallery -->
+<section class="exp-gallery reveal">
+  <div class="exp-gallery-inner">
+    <h3>Galería</h3>
+    <div class="exp-gallery-grid" id="expGallery"></div>
+  </div>
+</section>
+
+<!-- Navigation -->
+<div class="exp-nav">
+  <a id="expPrev" href="#">
+    <svg viewBox="0 0 24 24"><polyline points="19 12 5 12"/><polyline points="12 19 5 12 12 5"/></svg>
+    <span id="expPrevLabel">Anterior</span>
+  </a>
+  <a href="index.html#experiences" style="text-align:center">Ver todas</a>
+  <a id="expNext" href="#">
+    <span id="expNextLabel">Siguiente</span>
+    <svg viewBox="0 0 24 24"><polyline points="5 12 19 12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </a>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-logo">
+    <img src="img/logo.svg" alt="Ophelia" />
+  </div>
+  <p>© 2026 Ophelia Studio · Lima, Perú</p>
+  <div class="footer-links">
+    <a href="index.html#experiences">Experiencias</a><a href="index.html#gallery">Portafolio</a><a href="index.html#contact">Contacto</a>
+    <a href="https://instagram.com/opheliastudio.pe" target="_blank">Instagram</a>
+  </div>
+</footer>
+
+<script>
+/* Experience data */
+const EXPS = {
+  emergency: {
+    label: '01 — Flower Boom', title: 'Emergency Kit', img: 'img/emergency-kit.png',
+    tagline: 'Sorprende en el momento preciso con una explosión floral.',
+    desc1: 'El Emergency Kit es una instalación rápida de flores directamente en el espacio destinado. Perfecto para oficinas, recepciones y momentos donde necesitas un gesto que impacte sin complicaciones.',
+    desc2: 'Cada kit viene armado con flores frescas de estación, listo para colocar. Solo dinos dónde y cuándo — nosotros nos encargamos del resto.',
+    includes: ['Flores frescas de estación', 'Gipsofilia, lluvia, astromelias', 'Preparación y empaque', 'Entrega en Lima Metropolitana'],
+    stdPrice: 'Desde S/300', stdDesc: 'Paquete base para 10 kits.',
+    stdList: ['10 kits individuales', 'Sin IGV', 'Sin staff on site', 'Flores: gipsofilia, lluvia, astromelias'],
+    prmPrice: 'Cotización', prmDesc: 'Flores premium y personalización total.',
+    prmList: ['Baby rosas, claveles', 'Flores seleccionadas de gama alta', 'Packaging artesanal', 'Staff on site disponible'],
+    wa: 'Hola%20Ophelia%2C%20quisiera%20cotizar%20el%20Emergency%20Kit',
+    gallery: ['img/emergency-kit.png', 'img/gallery-5.png', 'img/gallery-2.png', 'img/gallery-4.png'],
+    prev: null, next: 'foryou'
+  },
+  foryou: {
+    label: '02 — Regalos', title: 'For You', img: 'img/for-you.png',
+    tagline: 'Para decir algo con flores y palabras.',
+    desc1: 'For You combina una instalación floral con un porta tarjetas y tarjetas personalizadas. Ideal para eventos donde cada invitado se lleva algo especial — un gesto que mezcla lo visual con lo personal.',
+    desc2: 'Cada tarjeta puede llevar el mensaje que quieras. Lo preparamos todo: la instalación, las flores, el detalle escrito.',
+    includes: ['Instalación floral', 'Porta tarjetas diseñado', 'Tarjetas personalizadas', 'Flores frescas de estación'],
+    stdPrice: 'Desde S/500', stdDesc: 'Paquete para 20 tarjetas.',
+    stdList: ['20 tarjetas personalizadas', 'Sin IGV', 'Claveles, astromelias, margaritas', 'Flores de estación'],
+    prmPrice: 'Cotización', prmDesc: 'Flores premium + staff + detalles artesanales.',
+    prmList: ['Lisiantus, gerberas, rosas, tulipanes', 'Artisan details', 'Staff on site', 'Packaging premium'],
+    wa: 'Hola%20Ophelia%2C%20quisiera%20cotizar%20For%20You',
+    gallery: ['img/for-you.png', 'img/gallery-2.png', 'img/gallery-4.png', 'img/gallery-6.png'],
+    prev: 'emergency', next: 'wall'
+  },
+  wall: {
+    label: '03 — Instalaciones', title: 'Flower Wall', img: 'img/flower-wall.png',
+    tagline: 'Una pared de flores que transforma cualquier espacio.',
+    desc1: 'El Flower Wall es una instalación de flores sobre estructura de madera de 1.80 × 1.20 metros. Es el fondo perfecto para fotos, el punto focal de cualquier evento, la pieza que todos recuerdan.',
+    desc2: 'Armamos todo en el lugar. Llegamos, instalamos la estructura, y la cubrimos flor por flor hasta que quede exactamente como lo imaginaste.',
+    includes: ['Estructura de madera 1.80×1.20m', 'Flores frescas cubriendo toda la superficie', 'Instalación en sitio', 'Tarjeta personalizada'],
+    stdPrice: 'Desde S/700', stdDesc: 'Pared con flores de estación.',
+    stdList: ['Rosas, girasoles, claveles, astromelias', 'Sin IGV', 'Sin staff on site', 'Instalación incluida'],
+    prmPrice: 'Cotización', prmDesc: 'Flores premium + staff + detalles artesanales.',
+    prmList: ['Lisiantus, crisantemos, tulipanes', 'Gerberas, ave del paraíso', 'Staff on site', 'Artisan details'],
+    wa: 'Hola%20Ophelia%2C%20quisiera%20cotizar%20el%20Flower%20Wall',
+    gallery: ['img/flower-wall.png', 'img/hero-4.png', 'img/gallery-3.png', 'img/gallery-1.png'],
+    prev: 'foryou', next: 'bar'
+  },
+  bar: {
+    label: '04 — Interactivo', title: 'Flower Bar', img: 'img/flower-bar.png',
+    tagline: 'Tu público arma su propio ramo. La experiencia más interactiva.',
+    desc1: 'El Flower Bar convierte a tus invitados en protagonistas. Montamos una estación con mesa de madera, baldes de acrílico y variedad de flores para que cada persona arme su propio ramo personalizado.',
+    desc2: 'Es la experiencia que más genera conversación. Perfecta para eventos corporativos, lanzamientos de marca, bodas y celebraciones donde quieres algo diferente.',
+    includes: ['Mesa de madera con branding', 'Atril para logo de tu marca', 'Baldes de acrílico', 'Staff profesional', 'Packaging individual', 'Tarjetas personalizadas'],
+    stdPrice: 'Desde S/900', stdDesc: '1 staff, 3 flores principales.',
+    stdList: ['1 staff profesional', '3 flores principales', '5 follajes', 'Packaging básico', 'Personalización de tarjetas'],
+    prmPrice: 'Desde S/1,700', prmDesc: '2 staff, 5 flores premium.',
+    prmList: ['2 staff profesionales', '5 flores principales', '7 follajes', 'Rosas, lisiantus, crisantemos', 'Gerberas, ave del paraíso', 'Packaging premium'],
+    wa: 'Hola%20Ophelia%2C%20quisiera%20cotizar%20el%20Flower%20Bar',
+    gallery: ['img/flower-bar.png', 'img/gallery-1.png', 'img/gallery-6.png', 'img/gallery-3.png'],
+    prev: 'wall', next: null
+  }
+};
+
+const ORDER = ['emergency', 'foryou', 'wall', 'bar'];
+
+/* Get experience key from URL */
+const params = new URLSearchParams(window.location.search);
+const key = params.get('e') || 'emergency';
+const exp = EXPS[key] || EXPS.emergency;
+
+/* Fill page */
+document.title = `Ophelia — ${exp.title}`;
+document.getElementById('expHeroImg').src = exp.img;
+document.getElementById('expHeroImg').alt = exp.title;
+document.getElementById('expLabel').textContent = exp.label;
+document.getElementById('expTitle').textContent = exp.title;
+document.getElementById('expTagline').textContent = exp.tagline;
+document.getElementById('expDesc1').textContent = exp.desc1;
+document.getElementById('expDesc2').textContent = exp.desc2;
+
+/* Includes */
+const includesEl = document.getElementById('expIncludes');
+exp.includes.forEach(item => {
+  includesEl.innerHTML += `<div class="include-item"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg><span>${item}</span></div>`;
+});
+
+/* Pricing */
+document.getElementById('expStdPrice').textContent = exp.stdPrice;
+document.getElementById('expStdDesc').textContent = exp.stdDesc;
+const stdList = document.getElementById('expStdList');
+exp.stdList.forEach(i => stdList.innerHTML += `<li>${i}</li>`);
+
+document.getElementById('expPrmPrice').textContent = exp.prmPrice;
+document.getElementById('expPrmDesc').textContent = exp.prmDesc;
+const prmList = document.getElementById('expPrmList');
+exp.prmList.forEach(i => prmList.innerHTML += `<li>${i}</li>`);
+
+/* WhatsApp */
+document.getElementById('expWa').href = `https://wa.me/51937664403?text=${exp.wa}`;
+
+/* Gallery & Lightbox */
+const galleryEl = document.getElementById('expGallery');
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+const lightboxCaption = document.getElementById('lightboxCaption');
+
+exp.gallery.forEach(src => {
+  const img = document.createElement('img');
+  img.src = src;
+  img.alt = exp.title;
+  img.loading = 'lazy';
+  img.classList.add('gallery-img');
+  
+  img.addEventListener('click', () => {
+    if(lightbox && lightboxImg) {
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      if(lightboxCaption) lightboxCaption.textContent = img.alt;
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+  });
+  galleryEl.appendChild(img);
+});
+
+/* Navigation */
+const prevLink = document.getElementById('expPrev');
+const nextLink = document.getElementById('expNext');
+if (exp.prev) {
+  prevLink.href = `experiencia.html?e=${exp.prev}`;
+  document.getElementById('expPrevLabel').textContent = EXPS[exp.prev].title;
+} else {
+  prevLink.style.visibility = 'hidden';
+}
+if (exp.next) {
+  nextLink.href = `experiencia.html?e=${exp.next}`;
+  document.getElementById('expNextLabel').textContent = EXPS[exp.next].title;
+} else {
+  nextLink.style.visibility = 'hidden';
+}
+
+/* Nav scroll & Parallax */
+const nav = document.getElementById('nav');
+const heroImg = document.getElementById('expHeroImg');
+
+function updateScroll() {
+  const y = window.scrollY;
+  // Nav logic
+  const isScrolled = y > 60;
+  nav.classList.toggle('scrolled', isScrolled);
+  nav.classList.toggle('nav--light', !isScrolled);
+  nav.classList.toggle('nav--dark', isScrolled);
+  
+  // Parallax logic
+  if (heroImg) {
+    heroImg.style.transform = `translateY(${y * 0.4}px)`;
+  }
+}
+window.addEventListener('scroll', updateScroll, { passive: true });
+updateScroll();
+
+/* Hamburger */
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+hamburger?.addEventListener('click', () => navLinks.classList.toggle('open'));
+navLinks?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+/* Reveal */
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.15 });
+reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
